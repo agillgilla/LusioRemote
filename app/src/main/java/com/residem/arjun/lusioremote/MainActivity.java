@@ -2,6 +2,7 @@ package com.residem.arjun.lusioremote;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.VibrationEffect;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private Vibrator vibrator;
     private static final int BUTTON_VIBRATE_DURATION = 50;
     private static final int TOGGLE_VIBRATE_DURATION = 25;
+
+    private static final String LAST_HOST_KEY = "lastHost";
 
     private MainActivity thisActivity;
 
@@ -214,6 +218,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void connect() {
+        boolean connected = testLastHost();
+
+        if (connected) {
+            return;
+        }
+
         GetSubnetTask getSubnetTask = new GetSubnetTask();
         String subnet = null;
         try {
@@ -319,6 +329,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public boolean testLastHost() {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        String lastHost = sharedPref.getString(LAST_HOST_KEY, "");
+
+        if (lastHost.equals("")) {
+            return false;
+        }
+
+        commandQueue = new LinkedBlockingQueue<String>();
+
+        CommandSender commandSender = new CommandSender(this, commandQueue);
+
+        ScanHostsTask scanHostsTask = new ScanHostsTask(commandSender, lastHost);
+
+        Thread taskThread = new Thread(scanHostsTask);
+        taskThread.start();
+        try {
+            taskThread.join();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
+
+        boolean isConnected = scanHostsTask.isConnected();
+
+        if (isConnected) {
+            toast("Connected to host: " + commandSender.getConnectedHost() + ":" + Integer.toString(CommandSender.PORT));
+
+            Thread commandThread = new Thread(commandSender);
+            commandThread.start();
+
+            disableConnectButton();
+            enableButtons();
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void attemptConnection(List<String> availableHosts) {
         for (String host : availableHosts) {
             System.out.println("Attempting to connect to: " + host);
@@ -332,6 +381,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (isConnected) {
             toast("Connected to host: " + commandSender.getConnectedHost() + ":" + Integer.toString(CommandSender.PORT));
+
+            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(LAST_HOST_KEY, commandSender.getConnectedHost());
+            editor.commit();
 
             Thread commandThread = new Thread(commandSender);
             commandThread.start();
