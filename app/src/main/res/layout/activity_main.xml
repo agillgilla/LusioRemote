@@ -169,22 +169,37 @@
                 android:textSize="36sp" />
 
             <Button
-                android:id="@+id/exitButton"
+                android:id="@+id/infoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-5dp"
                 android:layout_marginBottom="-5dp"
-                android:text="Exit"
+                android:text="INFO"
                 android:textSize="36sp" />
 
-            <Button
-                android:id="@+id/powerButton"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-5dp"
-                android:layout_marginBottom="-5dp"
-                android:text="POWER OFF"
-                android:textSize="36sp" />
+                android:layout_height="73dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/exitButton"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginBottom="-5dp"
+                    android:text="Exit"
+                    android:textSize="36sp" />
+
+                <Button
+                    android:id="@+id/powerButton"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginBottom="-5dp"
+                    android:text="POWER"
+                    android:textSize="36sp" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/connectButton"

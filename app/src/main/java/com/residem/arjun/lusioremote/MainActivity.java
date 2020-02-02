@@ -66,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button infoButton = (Button) findViewById(R.id.infoButton);
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                vibrate(TOGGLE_VIBRATE_DURATION);
+                commandQueue.offer("i");
+            }
+        });
+
 
         Button connectButton = (Button) findViewById(R.id.connectButton);
         connectButton.setOnClickListener(new View.OnClickListener() {
@@ -209,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        this.textButtons = new Button[]{backButton, exitButton, stepSizeButton, powerOffButton};
+        this.textButtons = new Button[]{backButton, exitButton, stepSizeButton, powerOffButton, infoButton};
 
         this.imageButtons = new ImageButton[]{upButton, downButton, rightButton, leftButton, selectButton, stepBackwardButton, stepForwardButton, playPauseButton};
 
