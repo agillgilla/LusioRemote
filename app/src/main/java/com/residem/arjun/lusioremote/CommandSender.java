@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 
 public class CommandSender implements Runnable {
@@ -30,7 +31,12 @@ public class CommandSender implements Runnable {
         this.commandQueue = commandQueue;
     }
 
-    public boolean scanHostsAndConnect(List<String> possibleHosts) {
+    public boolean scanHostsAndConnect(List<String> possibleHosts, Optional<Long> timeout) {
+        long socketTimeout = 500;
+        if (timeout.isPresent()) {
+            socketTimeout = timeout.get();
+        }
+
         for (String possibleHost : possibleHosts) {
             try {
                 socket = new Socket();

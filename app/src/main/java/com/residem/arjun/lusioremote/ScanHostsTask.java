@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScanHostsTask implements Runnable {
@@ -24,7 +25,8 @@ public class ScanHostsTask implements Runnable {
 
     @Override
     public void run() {
-        this.isConnected = commandSender.scanHostsAndConnect(Arrays.asList(host));
+        Optional<Long> empty = Optional.empty();
+        this.isConnected = commandSender.scanHostsAndConnect(Arrays.asList(host), empty);
     }
 
     public boolean isConnected() {

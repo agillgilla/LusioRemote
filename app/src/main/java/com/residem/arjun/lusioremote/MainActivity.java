@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -385,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
 
         CommandSender commandSender = new CommandSender(this, commandQueue);
 
-        boolean isConnected = commandSender.scanHostsAndConnect(availableHosts);
+        boolean isConnected = commandSender.scanHostsAndConnect(availableHosts, Optional.of(1500L));
 
         if (isConnected) {
             toast("Connected to host: " + commandSender.getConnectedHost() + ":" + Integer.toString(CommandSender.PORT));
