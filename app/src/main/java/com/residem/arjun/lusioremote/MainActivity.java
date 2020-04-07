@@ -10,11 +10,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
@@ -67,13 +68,49 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button infoButton = (Button) findViewById(R.id.infoButton);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Search query");
+
+        // Set up the buttons
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        Button searchButton = (Button) findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                vibrate(TOGGLE_VIBRATE_DURATION);
+
+                // Set up the input
+                final EditText input = new EditText(thisActivity);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //m_Text = input.getText().toString();
+                        commandQueue.offer("f:" + input.getText().toString());
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
+        /*
+        Button infoButton = (Button) findViewById(R.id.searchButton);
         infoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 vibrate(TOGGLE_VIBRATE_DURATION);
                 commandQueue.offer("i");
             }
         });
+        */
 
 
         Button connectButton = (Button) findViewById(R.id.connectButton);
@@ -218,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        this.textButtons = new Button[]{backButton, exitButton, stepSizeButton, powerOffButton, infoButton};
+        this.textButtons = new Button[]{backButton, exitButton, stepSizeButton, powerOffButton, searchButton};
 
         this.imageButtons = new ImageButton[]{upButton, downButton, rightButton, leftButton, selectButton, stepBackwardButton, stepForwardButton, playPauseButton};
 
