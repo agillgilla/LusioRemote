@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int TOGGLE_VIBRATE_DURATION = 25;
 
     private static final String LAST_HOST_KEY = "lastHost";
+    private static final int LAST_HOST_CONNECT_ATTEMPTS = 3;
 
     private MainActivity thisActivity;
 
@@ -264,12 +265,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void connect() {
-        boolean connected = testLastHost();
+        boolean connected = false;
 
-        if (connected) {
-            return;
+        for (int i = 0; i < LAST_HOST_CONNECT_ATTEMPTS; i++) {
+            connected = testLastHost();
+
+            if (connected) {
+                return;
+            }
         }
-
+        
         GetSubnetTask getSubnetTask = new GetSubnetTask();
         String subnet = null;
         try {
