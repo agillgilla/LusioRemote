@@ -80,12 +80,17 @@ public class CommandSender implements Runnable {
             //System.out.println("Sending command: " + command);
             socketStream.write((command + DELIMITER).getBytes());
         } catch (SocketException se) {
-            //activity.toast("Connection lost.");
+            if (command.equals(MainActivity.HEARTBEAT_CMD)) {
+                // Silent reconnect
+                activity.silentReconnect();
+            } else {
+                // Explicit reconnect
 
-            activity.snackbar("Connection lost.", "RECONNECT");
+                activity.snackbar("Connection lost.", "RECONNECT");
 
-            activity.disableButtons();
-            activity.enableConnectButton();
+                activity.disableButtons();
+                activity.enableConnectButton();
+            }
         } catch (IOException ioe) {
             System.out.println("Error sending command:");
             ioe.printStackTrace();

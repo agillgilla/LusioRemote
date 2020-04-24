@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static BlockingQueue<String> commandQueue;
 
+    public static final String HEARTBEAT_CMD = "h";
+
     private Vibrator vibrator;
     private static final int BUTTON_VIBRATE_DURATION = 50;
     private static final int TOGGLE_VIBRATE_DURATION = 25;
@@ -264,6 +266,15 @@ public class MainActivity extends AppCompatActivity {
         enableConnectButton();
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        if (commandQueue != null) {
+            commandQueue.offer(HEARTBEAT_CMD);
+        }
+    }
+
     public void connect() {
         boolean connected = false;
 
@@ -274,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-        
+
         GetSubnetTask getSubnetTask = new GetSubnetTask();
         String subnet = null;
         try {
@@ -456,6 +467,14 @@ public class MainActivity extends AppCompatActivity {
         */
 
         //socketStream.writeObject("exit");
+    }
+
+    public void silentReconnect() {
+        thisActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                connect();
+            }
+        });
     }
 
     public void toast(final String message) {
