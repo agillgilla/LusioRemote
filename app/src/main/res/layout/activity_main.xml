@@ -168,18 +168,36 @@
                 android:text="Back"
                 android:textSize="36sp" />
 
-            <Button
-                android:id="@+id/searchButton"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-5dp"
+                android:layout_height="73dp"
                 android:layout_marginBottom="-5dp"
-                android:text="@android:string/search_go"
-                android:textSize="36sp" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/searchButton"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginBottom="-5dp"
+                    android:text="@android:string/search_go"
+                    android:textSize="36sp" />
+
+                <Button
+                    android:id="@+id/subtitlesButton"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginBottom="-5dp"
+                    android:layout_weight="1"
+                    android:text="SUBTITLE"
+                    android:textSize="36sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="73dp"
+                android:layout_marginBottom="-5dp"
                 android:orientation="horizontal">
 
                 <Button
