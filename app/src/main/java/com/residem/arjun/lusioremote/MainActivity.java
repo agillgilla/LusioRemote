@@ -105,11 +105,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button subtitlesButton = (Button) findViewById(R.id.subtitlesButton);
-        subtitlesButton.setOnClickListener(new View.OnClickListener() {
+        Button infoButton = (Button) findViewById(R.id.infoButton);
+        infoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 vibrate(BUTTON_VIBRATE_DURATION);
-                commandQueue.offer("c");
+                commandQueue.offer("m");
             }
         });
 
@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        this.textButtons = new Button[]{backButton, exitButton, stepSizeButton, powerOffButton, searchButton, subtitlesButton};
+        this.textButtons = new Button[]{backButton, exitButton, stepSizeButton, powerOffButton, searchButton, infoButton};
 
         this.imageButtons = new ImageButton[]{upButton, downButton, rightButton, leftButton, selectButton, stepBackwardButton, stepForwardButton, playPauseButton};
 
